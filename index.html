@@ -3,21 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OneSignal Notification Demo</title>
+    <title>Subscribe to Notifications</title>
     <!-- OneSignal SDK -->
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-    <script>
-      window.OneSignalDeferred = window.OneSignalDeferred || [];
-      OneSignalDeferred.push(async function(OneSignal) {
-        await OneSignal.init({
-          appId: "d950800e-c973-4daa-b497-34ea0ada211d",
-          safari_web_id: "web.onesignal.auto.364542e4-0165-4e49-b6eb-0136f3f4eaa9",
-          notifyButton: {
-            enable: true,
-          },
-        });
-      });
-    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,11 +17,71 @@
         h1 {
             color: #2c3e50;
         }
+        .container {
+            background: #f9f9f9;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .subscribed {
+            background: #d4edda;
+            color: #155724;
+        }
+        .not-subscribed {
+            background: #f8d7da;
+            color: #721c24;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to OneSignal Demo</h1>
-    <p>This website demonstrates push notifications using OneSignal.</p>
-    <p>You should see a notification prompt or bell icon in your browser.</p>
+    <div class="container">
+        <h1>Subscribe to Our Notifications</h1>
+        <p>Get important updates directly to your device!</p>
+        
+        <div id="subscription-status" class="status not-subscribed">
+            You are not currently subscribed to notifications.
+        </div>
+        
+        <p>The notification prompt should appear automatically. If you don't see it, check your browser settings.</p>
+    </div>
+
+    <script>
+        window.OneSignalDeferred = window.OneSignalDeferred || [];
+        OneSignalDeferred.push(async function(OneSignal) {
+            await OneSignal.init({
+                appId: "d950800e-c973-4daa-b497-34ea0ada211d",
+                safari_web_id: "web.onesignal.auto.364542e4-0165-4e49-b6eb-0136f3f4eaa9",
+                notifyButton: {
+                    enable: true,
+                },
+            });
+            
+            // Check subscription status
+            OneSignal.User.pushSubscription.addEventListener('change', (subscription) => {
+                updateSubscriptionStatus(!!subscription.current.token);
+            });
+            
+            // Initial status check
+            const isSubscribed = await OneSignal.Notifications.isPushSupported() && 
+                                 await OneSignal.User.pushSubscription.optedIn;
+            updateSubscriptionStatus(isSubscribed);
+        });
+        
+        function updateSubscriptionStatus(isSubscribed) {
+            const statusElement = document.getElementById('subscription-status');
+            if (isSubscribed) {
+                statusElement.textContent = "You are subscribed to notifications!";
+                statusElement.className = "status subscribed";
+            } else {
+                statusElement.textContent = "You are not currently subscribed to notifications.";
+                statusElement.className = "status not-subscribed";
+            }
+        }
+    </script>
 </body>
 </html>
