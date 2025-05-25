@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Redeem Codes</title>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3.2.0/dist/email.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #34495e;
+        }
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(41, 128, 185, 0.3);
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 25px 0;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .success-screen {
+            display: none;
+        }
+        .success-screen h2 {
+            color: #27ae60;
+        }
+        .processing-animation {
+            display: none;
+            margin: 20px 0;
+        }
+        .processing-animation .dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #3498db;
+            margin: 0 4px;
+            animation: bounce 1.4s infinite ease-in-out;
+        }
+        .processing-animation .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .processing-animation .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            display: block;
+            stroke-width: 5;
+            stroke: #27ae60;
+            stroke-miterlimit: 10;
+            box-shadow: 0 0 0 rgba(39, 174, 96, 0.4);
+            animation: checkmark-fill 0.4s ease-in-out 0.4s forwards, checkmark-scale 0.3s ease-in-out 0.9s both;
+        }
+        .checkmark-circle {
+            stroke-dasharray: 166;
+            stroke-dashoffset: 166;
+            stroke-width: 5;
+            stroke-miterlimit: 10;
+            stroke: #27ae60;
+            fill: none;
+            animation: checkmark-stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        }
+        .checkmark-check {
+            transform-origin: 50% 50%;
+            stroke-dasharray: 48;
+            stroke-dashoffset: 48;
+            animation: checkmark-stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+        }
+        @keyframes checkmark-stroke {
+            100% { stroke-dashoffset: 0; }
+        }
+        @keyframes checkmark-scale {
+            0%, 100% { transform: none; }
+            50% { transform: scale3d(1.1, 1.1, 1); }
+        }
+        @keyframes checkmark-fill {
+            100% { box-shadow: inset 0 0 0 100px rgba(39, 174, 96, 0.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Form -->
+        <div id="main-form">
+            <img src="https://i.imghippo.com/files/ZXn3977VH.png" alt="Website Logo" class="logo">
+            <h1>Get Your Free Code</h1>
+            <p class="subtitle">Enter your email to receive a unique redeem code</p>
+            
+            <div class="form-group">
+                <label for="user-email">Email Address</label>
+                <input type="email" id="user-email" placeholder="your@email.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="code-type">Code Type</label>
+                <select id="code-type">
+                    <option value="standard">Standard Code</option>
+                    <option value="premium">Premium Code</option>
+                    <option value="vip">VIP Code</option>
+                </select>
+            </div>
+            
+            <button id="redeem-btn" onclick="generateAndSendCode()">🎁 Get My Free Code</button>
+            
+            <div id="processing" class="processing-animation">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <p>Generating your unique code...</p>
+            </div>
+            
+            <div id="status-message" class="status"></div>
+        </div>
+        
+        <!-- Success Screen -->
+        <div id="success-screen" class="success-screen">
+            <img src="https://i.imghippo.com/files/ZXn3977VH.png" alt="Website Logo" class="logo">
+            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+            </svg>
+            <h2>Code Successfully Generated!</h2>
+            <p>Your unique redeem code has been sent to your email.</p>
+            <p>Please check your inbox (and spam folder) for the email.</p>
+            <button onclick="resetForm()">Get Another Code</button>
+        </div>
+    </div>
+
+    <script>
+        // Initialize EmailJS with your public key
+        (function() {
+            emailjs.init("c7aOloe2jlw3ySJIJ");
+        })();
+        
+        // Generate and send code
+        function generateAndSendCode() {
+            const emailInput = document.getElementById('user-email');
+            const codeType = document.getElementById('code-type').value;
+            const userEmail = emailInput.value.trim();
+            
+            // Validate email
+            if (!userEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)) {
+                showStatus('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Disable button and show processing animation
+            const redeemBtn = document.getElementById('redeem-btn');
+            const processing = document.getElementById('processing');
+            redeemBtn.disabled = true;
+            redeemBtn.style.display = 'none';
+            processing.style.display = 'block';
+            
+            // Generate random code
+            const code = generateRandomCode(codeType);
+            
+            // Prepare email parameters
+            const templateParams = {
+                to_email: userEmail,
+                user_email: userEmail,
+                redemption_code: code,
+                code_type: formatCodeType(codeType),
+                redemption_date: new Date().toLocaleDateString(),
+                website_url: window.location.hostname
+            };
+            
+            // Send email using EmailJS
+            emailjs.send('service_sjqmh5a', 'template_ct98fi7', templateParams)
+                .then(function(response) {
+                    console.log('Email sent successfully!', response);
+                    
+                    // Hide processing and show success after short delay
+                    setTimeout(() => {
+                        processing.style.display = 'none';
+                        document.getElementById('main-form').style.display = 'none';
+                        document.getElementById('success-screen').style.display = 'block';
+                    }, 1000);
+                    
+                    // Store the code (optional)
+                    storeCode(code, codeType);
+                }, function(error) {
+                    console.error('Email failed to send:', error);
+                    
+                    // Show error message
+                    processing.style.display = 'none';
+                    redeemBtn.disabled = false;
+                    redeemBtn.style.display = 'block';
+                    showStatus('Failed to send email. Please try again.', 'error');
+                });
+        }
+        
+        // Generate random code with prefix based on type
+        function generateRandomCode(type) {
+            const prefix = {
+                'standard': 'STD',
+                'premium': 'PRM',
+                'vip': 'VIP'
+            }[type] || 'GEN';
+            
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = prefix + '-';
+            
+            for (let i = 0; i < 8; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+                if (i === 3) code += '-'; // Add a separator for readability
+            }
+            
+            return code;
+        }
+        
+        // Format code type for display
+        function formatCodeType(type) {
+            return {
+                'standard': 'Standard',
+                'premium': 'Premium',
+                'vip': 'VIP'
+            }[type] || 'Standard';
+        }
+        
+        // Store code in localStorage (optional)
+        function storeCode(code, type) {
+            const redeemedCodes = JSON.parse(localStorage.getItem('redeemedCodes') || '[]');
+            redeemedCodes.push({
+                code: code,
+                type: type,
+                email: document.getElementById('user-email').value.trim(),
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('redeemedCodes', JSON.stringify(redeemedCodes));
+        }
+        
+        // Reset form
+        function resetForm() {
+            document.getElementById('user-email').value = '';
+            document.getElementById('success-screen').style.display = 'none';
+            document.getElementById('main-form').style.display = 'block';
+            document.getElementById('redeem-btn').style.display = 'block';
+            document.getElementById('redeem-btn').disabled = false;
+        }
+        
+        // Show status message
+        function showStatus(message, type) {
+            const statusElement = document.getElementById('status-message');
+            statusElement.textContent = message;
+            statusElement.className = 'status ' + type;
+            statusElement.style.display = 'block';
+            
+            setTimeout(() => {
+                statusElement.style.display = 'none';
+            }, 5000);
+        }
+    </script>
+</body>
+  </html>
