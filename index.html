@@ -50,7 +50,16 @@
         <p>The notification prompt should appear automatically. If you don't see it, check your browser settings.</p>
     </div>
 
-    <script>
+
+        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+      appId: "10f3e361-e181-499c-a675-40d58d411e68",
+    });
+  });
+
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
