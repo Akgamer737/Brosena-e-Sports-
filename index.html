@@ -3,94 +3,323 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subscribe to Notifications</title>
-    <!-- OneSignal SDK -->
+    <title>Notification System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        h1 {
-            color: #2c3e50;
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
         }
-        .container {
-            background: #f9f9f9;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+        .card:hover {
+            transform: translateY(-5px);
         }
-        .status {
-            margin: 20px 0;
-            padding: 10px;
-            border-radius: 4px;
+
+        .card-header {
+            border-radius: 10px 10px 0 0 !important;
         }
-        .subscribed {
-            background: #d4edda;
-            color: #155724;
+
+        #notification-list {
+            max-height: 300px;
+            overflow-y: auto;
         }
-        .not-subscribed {
-            background: #f8d7da;
-            color: #721c24;
+
+        .notification-item {
+            border-left: 4px solid #0d6efd;
+            margin-bottom: 5px;
+        }
+
+        .notification-item:hover {
+            background-color: #f1f1f1;
+        }
+
+        .badge {
+            font-size: 0.9rem;
+            padding: 0.5em 0.75em;
+        }
+
+        #send-status {
+            min-height: 24px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Subscribe to Our Notifications</h1>
-        <p>Get important updates directly to your device!</p>
-        
-        <div id="subscription-status" class="status not-subscribed">
-            You are not currently subscribed to notifications.
+        <header class="text-center my-5">
+            <h1>Notification System</h1>
+            <p class="lead">Send and receive browser notifications in real-time</p>
+        </header>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3>Receive Notifications</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>Subscribe to receive notifications from our service.</p>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span>Subscription Status:</span>
+                            <span id="subscription-status" class="badge bg-secondary">Checking...</span>
+                        </div>
+                        <button id="subscribe-btn" class="btn btn-success w-100">Subscribe to Notifications</button>
+                        <div id="received-notifications" class="mt-4">
+                            <h5>Received Notifications:</h5>
+                            <ul id="notification-list" class="list-group">
+                                <!-- Notifications will appear here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h3>Send Notifications (Admin)</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="notification-form">
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="title" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea class="form-control" id="message" rows="3" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="url" class="form-label">URL (optional)</label>
+                                <input type="url" class="form-control" id="url" placeholder="https://example.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="admin-key" class="form-label">Admin Key</label>
+                                <input type="password" class="form-control" id="admin-key" placeholder="Enter admin key to send">
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Send Notification</button>
+                        </form>
+                        <div id="send-status" class="mt-3 text-center"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <p>The notification prompt should appear automatically. If you don't see it, check your browser settings.</p>
     </div>
 
-
-        <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-<script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "10f3e361-e181-499c-a675-40d58d411e68",
-    });
-  });
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // OneSignal initialization
         window.OneSignalDeferred = window.OneSignalDeferred || [];
         OneSignalDeferred.push(async function(OneSignal) {
             await OneSignal.init({
-                appId: "d950800e-c973-4daa-b497-34ea0ada211d",
-                safari_web_id: "web.onesignal.auto.364542e4-0165-4e49-b6eb-0136f3f4eaa9",
+                appId: "10f3e361-e181-499c-a675-40d58d411e68",
+                safari_web_id: "web.onesignal.auto.4e1b7a76-8f99-4c0f-9f2b-963828c3a6f2",
                 notifyButton: {
                     enable: true,
                 },
             });
             
-            // Check subscription status
-            OneSignal.User.pushSubscription.addEventListener('change', (subscription) => {
-                updateSubscriptionStatus(!!subscription.current.token);
-            });
-            
-            // Initial status check
-            const isSubscribed = await OneSignal.Notifications.isPushSupported() && 
-                                 await OneSignal.User.pushSubscription.optedIn;
+            // Check if user is subscribed
+            const isSubscribed = await OneSignal.Notifications.isPushSupported();
             updateSubscriptionStatus(isSubscribed);
+            
+            // Listen for subscription changes
+            OneSignal.Notifications.addEventListener('permissionChange', async (permission) => {
+                const isSubscribed = permission === 'granted';
+                updateSubscriptionStatus(isSubscribed);
+            });
         });
-        
+
+        // Update subscription status UI
         function updateSubscriptionStatus(isSubscribed) {
             const statusElement = document.getElementById('subscription-status');
+            const subscribeBtn = document.getElementById('subscribe-btn');
+            
             if (isSubscribed) {
-                statusElement.textContent = "You are subscribed to notifications!";
-                statusElement.className = "status subscribed";
+                statusElement.textContent = "Subscribed ✅";
+                statusElement.className = "badge bg-success";
+                subscribeBtn.textContent = "Subscribed";
+                subscribeBtn.className = "btn btn-secondary w-100";
+                subscribeBtn.disabled = true;
             } else {
-                statusElement.textContent = "You are not currently subscribed to notifications.";
-                statusElement.className = "status not-subscribed";
+                statusElement.textContent = "Not Subscribed ❌";
+                statusElement.className = "badge bg-danger";
+                subscribeBtn.textContent = "Subscribe to Notifications";
+                subscribeBtn.className = "btn btn-success w-100";
+                subscribeBtn.disabled = false;
             }
         }
+
+        // Main application code
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const subscribeBtn = document.getElementById('subscribe-btn');
+            const notificationForm = document.getElementById('notification-form');
+            const sendStatus = document.getElementById('send-status');
+            const notificationList = document.getElementById('notification-list');
+            
+            // Handle subscription button click
+            subscribeBtn.addEventListener('click', async function() {
+                try {
+                    // Check if OneSignal is available
+                    if (typeof OneSignal === 'undefined') {
+                        throw new Error("Notification service not loaded yet. Please wait and try again.");
+                    }
+                    
+                    // Get permission to subscribe
+                    const permission = await OneSignal.Notifications.requestPermission();
+                    
+                    // Update status based on permission
+                    updateSubscriptionStatus(permission === 'granted');
+                    
+                    if (permission === 'granted') {
+                        // Add event listener for notifications
+                        OneSignal.Notifications.addEventListener('click', function(event) {
+                            addNotificationToUI(event.notification);
+                        });
+                        
+                        // Add event listener for foreground notifications
+                        OneSignal.Notifications.addEventListener('foregroundWillDisplay', function(event) {
+                            event.preventDefault(); // Prevent default notification display
+                            addNotificationToUI(event.notification);
+                        });
+                    } else if (permission === 'default') {
+                        // User dismissed the permission prompt
+                        alert("Please allow notifications to receive updates.");
+                    } else {
+                        // User blocked notifications
+                        alert("Notifications are blocked. Please enable them in your browser settings.");
+                    }
+                } catch (error) {
+                    console.error("Error subscribing:", error);
+                    alert("Error subscribing to notifications: " + error.message);
+                }
+            });
+            
+            // Handle notification form submission
+            notificationForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('title').value;
+                const message = document.getElementById('message').value;
+                const url = document.getElementById('url').value;
+                const adminKey = document.getElementById('admin-key').value;
+                
+                // Simple client-side validation for demo purposes
+                // In a real app, you would verify this on the server
+                if (adminKey !== "demo123") {
+                    sendStatus.textContent = "Invalid admin key";
+                    sendStatus.style.color = "red";
+                    return;
+                }
+                
+                sendStatus.textContent = "Sending notification...";
+                sendStatus.style.color = "blue";
+                
+                try {
+                    // In a real app, you would send this to your server to handle the OneSignal API call
+                    // This is just a simulation for the frontend demo
+                    
+                    // Simulate API call delay
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    
+                    // Add the notification to the UI as if it was received
+                    const notification = {
+                        title: title,
+                        body: message,
+                        url: url || window.location.href,
+                        date: new Date()
+                    };
+                    
+                    addNotificationToUI(notification);
+                    
+                    // In a real implementation, you would:
+                    // 1. Send the notification data to your backend
+                    // 2. Your backend would use the OneSignal REST API to send the notification
+                    // 3. The notification would be delivered to all subscribed users
+                    
+                    sendStatus.textContent = "Notification sent successfully!";
+                    sendStatus.style.color = "green";
+                    
+                    // Reset form (keep admin key for convenience)
+                    document.getElementById('title').value = "";
+                    document.getElementById('message').value = "";
+                    document.getElementById('url').value = "";
+                    
+                    // Clear status after 3 seconds
+                    setTimeout(() => {
+                        sendStatus.textContent = "";
+                    }, 3000);
+                    
+                } catch (error) {
+                    console.error("Error sending notification:", error);
+                    sendStatus.textContent = "Error sending notification: " + error.message;
+                    sendStatus.style.color = "red";
+                }
+            });
+            
+            // Function to add notification to UI
+            function addNotificationToUI(notification) {
+                const notificationItem = document.createElement('li');
+                notificationItem.className = 'list-group-item notification-item';
+                
+                const titleEl = document.createElement('strong');
+                titleEl.textContent = notification.title || "No title";
+                
+                const messageEl = document.createElement('p');
+                messageEl.className = 'mb-1';
+                messageEl.textContent = notification.body || "No message";
+                
+                const metaEl = document.createElement('small');
+                metaEl.className = 'text-muted';
+                metaEl.textContent = new Date().toLocaleString();
+                
+                if (notification.url) {
+                    const linkEl = document.createElement('a');
+                    linkEl.href = notification.url;
+                    linkEl.textContent = " Open link";
+                    linkEl.target = "_blank";
+                    linkEl.className = "ms-2";
+                    metaEl.appendChild(linkEl);
+                }
+                
+                notificationItem.appendChild(titleEl);
+                notificationItem.appendChild(messageEl);
+                notificationItem.appendChild(metaEl);
+                
+                // Add to the top of the list
+                if (notificationList.firstChild) {
+                    notificationList.insertBefore(notificationItem, notificationList.firstChild);
+                } else {
+                    notificationList.appendChild(notificationItem);
+                }
+            }
+            
+            // Simulate receiving some initial notifications
+            const sampleNotifications = [
+                {
+                    title: "Welcome to our Notification System!",
+                    body: "You can now send and receive browser notifications.",
+                    url: "https://onesignal.com",
+                    date: new Date()
+                },
+                {
+                    title: "How to use this demo",
+                    body: "1. Subscribe to notifications\n2. Use admin panel to send (key: demo123)\n3. Receive notifications in real-time",
+                    date: new Date()
+                }
+            ];
+            
+            sampleNotifications.forEach(notification => {
+                addNotificationToUI(notification);
+            });
+        });
     </script>
 </body>
 </html>
